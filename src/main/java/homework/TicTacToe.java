@@ -31,7 +31,7 @@ public class TicTacToe {
             while (true) {
                 userTurn();
                 printField();
-                if (checkWin(SIGN_USER)){
+                if (checkWin(SIGN_USER)) {
                     System.out.println("You win!");
                     break;
                 }
@@ -68,13 +68,26 @@ public class TicTacToe {
     }
 
     private static boolean checkWin(char sign) {
+        if (findWinnerByRow(sign)) {
+            return true;
+        } else if (findWinnerByCol(sign)) {
+            return true;
+        } else if (findWinnerByMainDiagonal(sign)) {
+            return true;
+        } else if (findWinnerBySecondaryDiagonal(sign)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean findWinnerByRow(char sign) {
         for (int i = 0; i < fieldSizeY; i++) {
             for (int j = 0; j < fieldSizeX - WIN_COUNT + 1; j++) {
                 int count = 0;
                 for (int k = j; k < WIN_COUNT + j; k++) {
                     if (field[i][k] == sign) {
                         count++;
-                    }else break;
+                    }
                 }
                 if (count == WIN_COUNT) {
                     return true;
@@ -83,6 +96,58 @@ public class TicTacToe {
         }
         return false;
     }
+
+    private static boolean findWinnerByCol(char sign) {
+        for (int i = 0; i < fieldSizeY; i++) {
+            for (int j = 0; j < fieldSizeX - WIN_COUNT + 1; j++) {
+                int count = 0;
+                for (int k = j; k < WIN_COUNT + j; k++) {
+                    if (field[k][j] == sign) {
+                        count++;
+                    }
+                }
+                if (count == WIN_COUNT) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean findWinnerByMainDiagonal(char sign) {
+        for (int i = 0; i < fieldSizeY - WIN_COUNT + 1; i++) {
+            for (int j = 0; j < fieldSizeX - WIN_COUNT + 1; j++) {
+                int count = 0;
+                for (int k1 = i, k2 = j; k1 < WIN_COUNT + i; k1++, k2++) {
+                    if (field[k1][k2] == sign) {
+                        count++;
+                    }
+                }
+                if (count == WIN_COUNT) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean findWinnerBySecondaryDiagonal(char sign) {
+        for (int i = 0; i < fieldSizeY - WIN_COUNT + 1; i++) {
+            for (int j = fieldSizeX - 1; j >= WIN_COUNT - 1; j--) {
+                int count = 0;
+                for (int k1 = i, k2 = j; k1 < WIN_COUNT + i; k1++, k2--) {
+                    if (field[k1][k2] == sign) {
+                        count++;
+                    }
+                }
+                if (count == WIN_COUNT) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     private static void initField() {
         field = new char[fieldSizeY][fieldSizeX];
